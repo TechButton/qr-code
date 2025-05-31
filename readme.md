@@ -27,8 +27,8 @@ A simple PHP-based QR code generator and tracker, containerized with Docker. Thi
 1. **Clone the repository**
 
    ```sh
-   git clone https://github.com/YOUR-USERNAME/qr-code-tracker.git
-   cd qr-code-tracker
+   git clone https://github.com/TechButton/qr-code.git
+   cd qr-code
    ```
 
 2. **Edit Configuration (Required Before First Run)**
@@ -111,4 +111,4 @@ MIT
 ## Author
 
 Kyle Button  
-[kyle@frequency42.com](mailto:kyle@frequency42.com)
+kyle@kylebutton.com
