@@ -17,7 +17,7 @@ services:
       - qr_network
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.5
     container_name: qr_database
     restart: unless-stopped
     environment:
@@ -28,7 +28,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-prootpassword"]
       interval: 10s
       timeout: 5s
       retries: 5
