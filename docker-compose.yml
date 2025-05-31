@@ -3,7 +3,8 @@ version: '3.8'
 services:
   web:
     build:
-      context: ./php
+      context: .
+      dockerfile: php/Dockerfile
     container_name: qr_web_server
     ports:
       - "80:80"

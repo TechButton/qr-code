@@ -23,7 +23,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # Copy composer.json and composer.lock
-COPY ./src/composer.json ./composer.json
+COPY src/composer.json ./composer.json
 # If you have a composer.lock file, uncomment the next line
 # COPY ./src/composer.lock ./composer.lock
 
