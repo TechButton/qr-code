@@ -6,7 +6,7 @@ services:
       context: ./php
     container_name: qr_web_server
     ports:
-      - "8000:80" # Access via http://localhost:8000
+      - "80:80"
     volumes:
       - ./src:/var/www/html
     depends_on:
@@ -14,7 +14,6 @@ services:
         condition: service_healthy
     networks:
       - qr_network
-      - traefik_proxy   # <-- Add this line
 
   db:
     image: mysql:8.0
