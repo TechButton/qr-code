@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./php
+    container_name: qr_web_server
+    ports:
+      - "8000:80" # Access via http://localhost:8000
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - qr_network
+      - traefik_proxy   # <-- Add this line
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qr.rule=Host(`qr.example.com`)"
+      - "traefik.http.services.qr.loadbalancer.server.port=80"
+      # Add TLS if needed:
+      # - "traefik.http.routers.qr.tls=true"
+
+  db:
+    image: mysql:8.0
+    container_name: qr_database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: qr_tracker_db
+      MYSQL_USER: qruser
+      MYSQL_PASSWORD: qrpassword
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - qr_network
+
+volumes:
+  db_data:
+
+networks:
+  qr_network:
+    driver: bridge
+  traefik_proxy:    # <-- Add this section if not already defined by Traefik
+    external: true
