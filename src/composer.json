@@ -1,5 +1,5 @@
 {
-    "name": "TechButton/qr-tracker",
+    "name": "techbutton/qr-tracker",
     "description": "A simple QR code generator and tracker.",
     "type": "project",
     "require": {
@@ -9,7 +9,7 @@
     "authors": [
         {
             "name": "Kyle Button",
-            "email": "kyle@frequency42.com"
+            "email": "kyle@kylebutton.com"
         }
     ],
     "minimum-stability": "stable"
