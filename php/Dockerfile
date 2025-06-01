@@ -2,18 +2,12 @@ FROM php:8.2-apache
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    unzip \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
+    libzip-dev zip unzip libpng-dev libjpeg-dev libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install mysqli \
+    && docker-php-ext-install gd mysqli \
     && docker-php-ext-install zip
 
 # Install Composer
