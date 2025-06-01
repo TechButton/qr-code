@@ -1,8 +1,13 @@
 <?php
-<?php
 require_once 'config.php';
 session_start();
 
+if (isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
@@ -14,17 +19,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->fetch() && password_verify($password, $password_hash)) {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['is_admin'] = $is_admin;
+        $_SESSION['username'] = $username;
         header('Location: index.php');
         exit;
     } else {
-        $_SESSION['message'] = "Login failed.";
+        $message = "Login failed. Please check your credentials.";
     }
+    $stmt->close();
 }
 ?>
-<!-- Simple login form -->
-<form method="post">
-    <input name="username" required placeholder="Username"><br>
-    <input name="password" type="password" required placeholder="Password"><br>
-    <button type="submit">Login</button>
-</form>
-<?php if (isset($_SESSION['message'])) { echo $_SESSION['message']; unset($_SESSION['message']); } ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - QR Code Tracker</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
+    <form method="post">
+        <label>Username: <input name="username" required></label><br>
+        <label>Password: <input name="password" type="password" required></label><br>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="register.php">Register here</a></p>
+</body>
+</html>

@@ -56,6 +56,20 @@ if ($conn->query($sql_users) === TRUE) {
 // Add user_id to qr_codes
 $conn->query("ALTER TABLE qr_codes ADD COLUMN IF NOT EXISTS user_id INT DEFAULT NULL");
 
+// Create default admin user if not exists
+$admin_username = 'admin';
+$admin_password = password_hash('changeme', PASSWORD_DEFAULT);
+$check_admin = $conn->prepare("SELECT id FROM users WHERE username=?");
+$check_admin->bind_param("s", $admin_username);
+$check_admin->execute();
+$check_admin->store_result();
+if ($check_admin->num_rows === 0) {
+    $stmt = $conn->prepare("INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, 1)");
+    $stmt->bind_param("ss", $admin_username, $admin_password);
+    $stmt->execute();
+    $stmt->close();
+}
+$check_admin->close();
 $conn->close();
 
 echo "<p><a href='index.php'>Go to Home</a></p>";
