@@ -42,3 +42,7 @@ RUN mkdir -p /var/www/html/qrcodes && chmod 777 /var/www/html/qrcodes
 
 # Expose port 80
 EXPOSE 80
+
+ARG APACHE_SERVER_NAME=localhost
+ENV APACHE_SERVER_NAME=${APACHE_SERVER_NAME}
+RUN echo "ServerName ${APACHE_SERVER_NAME}" >> /etc/apache2/apache2.conf
