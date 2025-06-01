@@ -38,6 +38,7 @@ RUN if [ -f composer.json ]; then composer install --no-interaction --no-plugins
 # Ensure the web server can write to the qrcodes directory
 # The directory will be created by PHP, but permissions might be needed if pre-created.
 # We'll handle directory creation and writability check in PHP for simplicity here.
+RUN mkdir -p /var/www/html/qrcodes && chmod 777 /var/www/html/qrcodes
 
 # Expose port 80
 EXPOSE 80
