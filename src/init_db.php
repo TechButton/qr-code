@@ -70,6 +70,12 @@ if ($check_admin->num_rows === 0) {
     $stmt->close();
 }
 $check_admin->close();
+
+// Add email column if not exists
+$conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(255)");
+$conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token VARCHAR(64)");
+$conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires DATETIME");
+
 $conn->close();
 
 echo "<p><a href='index.php'>Go to Home</a></p>";
