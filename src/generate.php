@@ -68,11 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['data_url'])) {
         $result->saveToFile($full_image_path);
 
         // Save QR code details to the database
-        $stmt = $conn->prepare("INSERT INTO qr_codes (data_url, short_code, image_filename) VALUES (?, ?, ?)");
+        $user_id = $_SESSION['user_id'] ?? null;
+        $stmt = $conn->prepare("INSERT INTO qr_codes (data_url, short_code, image_filename, user_id) VALUES (?, ?, ?, ?)");
         if ($stmt === false) {
              throw new Exception("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
-        $stmt->bind_param("sss", $data_url, $short_code, $image_filename);
+        $stmt->bind_param("sssi", $data_url, $short_code, $image_filename, $user_id);
 
         if ($stmt->execute()) {
             $_SESSION['message'] = "QR Code generated successfully!";

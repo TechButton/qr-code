@@ -1,13 +1,13 @@
 <?php
 // Database configuration
-define('DB_HOST', 'db'); // This is the service name from docker-compose.yml
-define('DB_USER', 'qruser');
-define('DB_PASSWORD', 'qrpassword');
-define('DB_NAME', 'qr_tracker_db');
+define('DB_HOST', 'db');
+define('DB_USER', getenv('MYSQL_USER') ?: 'qruser');
+define('DB_PASSWORD', getenv('MYSQL_PASSWORD') ?: 'qrpassword');
+define('DB_NAME', getenv('MYSQL_DATABASE') ?: 'qr_tracker_db');
 
-// Base URL of your application (important for generating redirect links)
-// Adjust if your domain/port is different or if running in a subdirectory
-define('BASE_URL', 'http://localhost:8000/');
+// Use Apache server name from environment, fallback to localhost
+$serverName = getenv('APACHE_SERVER_NAME') ?: 'localhost';
+define('BASE_URL', 'http://' . $serverName . '/');
 
 // Directory to store QR code images (relative to this src/ directory)
 define('QR_CODE_DIR', 'qrcodes/');

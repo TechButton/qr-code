@@ -2,13 +2,18 @@
 require_once 'config.php';
 session_start(); // For displaying messages
 
+$user_id = $_SESSION['user_id'] ?? null;
+$is_admin = $_SESSION['is_admin'] ?? false;
+
 // Function to fetch existing QR codes with scan counts
-function getQrCodesWithScanCounts($db_conn) {
+function getQrCodesWithScanCounts($db_conn, $user_id, $is_admin) {
     $sql = "SELECT qc.*, COUNT(sl.id) as scan_count 
             FROM qr_codes qc
-            LEFT JOIN scan_logs sl ON qc.id = sl.qr_code_id
-            GROUP BY qc.id
-            ORDER BY qc.created_at DESC";
+            LEFT JOIN scan_logs sl ON qc.id = sl.qr_code_id";
+    if (!$is_admin) {
+        $sql .= " WHERE qc.user_id = " . intval($user_id);
+    }
+    $sql .= " GROUP BY qc.id ORDER BY qc.created_at DESC";
     $result = $db_conn->query($sql);
     $qr_codes = [];
     if ($result && $result->num_rows > 0) {
@@ -19,7 +24,7 @@ function getQrCodesWithScanCounts($db_conn) {
     return $qr_codes;
 }
 
-$existing_qr_codes = getQrCodesWithScanCounts($conn);
+$existing_qr_codes = getQrCodesWithScanCounts($conn, $user_id, $is_admin);
 
 ?>
 <!DOCTYPE html>
