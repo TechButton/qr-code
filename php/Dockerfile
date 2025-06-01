@@ -47,5 +47,6 @@ ARG APACHE_SERVER_NAME=localhost
 ENV APACHE_SERVER_NAME=${APACHE_SERVER_NAME}
 RUN echo "ServerName ${APACHE_SERVER_NAME}" >> /etc/apache2/apache2.conf
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY ../docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

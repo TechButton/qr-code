@@ -8,11 +8,7 @@ until php -r "mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); \$c = n
 done
 
 # Run init_db.php only if tables do not exist
-if php /var/www/html/init_db.php | grep -q "created"; then
-  echo "Database initialized."
-else
-  echo "Database already initialized or error occurred."
-fi
+php /var/www/html/init_db.php || true
 
 # Start Apache in the foreground
 exec apache2-foreground
