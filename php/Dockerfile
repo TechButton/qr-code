@@ -33,7 +33,7 @@ RUN if [ -f composer.json ]; then composer install --no-interaction --no-plugins
 
 # Copy application source (optional here if using volumes for development,
 # but good for production builds or if not mounting src directly)
-# COPY ./src/ /var/www/html/
+COPY src/ /var/www/html/
 
 # Ensure the web server can write to the qrcodes directory
 # The directory will be created by PHP, but permissions might be needed if pre-created.
