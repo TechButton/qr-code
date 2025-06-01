@@ -48,6 +48,13 @@ $existing_qr_codes = getQrCodesWithScanCounts($conn, $user_id, $is_admin);
             <h1 class="text-3xl md:text-4xl font-bold text-slate-700">QR Code Generator & Tracker</h1>
             <p class="text-slate-500">Create and track your QR codes easily.</p>
             <p class="mt-2 text-sm text-blue-600"><a href="init_db.php" class="hover:underline">Initialize/Check Database Tables</a></p>
+
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="mt-2 text-sm text-blue-600">
+                    <a href="change_password.php" class="hover:underline mr-4">Change Password</a>
+                    <a href="logout.php" class="hover:underline">Logout</a>
+                </div>
+            <?php endif; ?>
         </header>
 
         <?php if (isset($_SESSION['message'])): ?>
@@ -74,6 +81,12 @@ $existing_qr_codes = getQrCodesWithScanCounts($conn, $user_id, $is_admin);
                 </div>
             </form>
         </section>
+
+        <form method="get" class="mb-4 text-right">
+            <button type="submit" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-3 rounded-md text-sm shadow-sm transition duration-150">
+                Refresh Scan Counts
+            </button>
+        </form>
 
         <section>
             <h2 class="text-2xl font-semibold text-slate-600 mb-6">Existing QR Codes</h2>

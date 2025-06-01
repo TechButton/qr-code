@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $email = trim($_POST['email']);
 
-    // Prevent duplicate usernames or emails
     $stmt = $conn->prepare("SELECT id FROM users WHERE username=? OR email=?");
     $stmt->bind_param("ss", $username, $email);
     $stmt->execute();
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("INSERT INTO users (username, password_hash, email, is_admin) VALUES (?, ?, ?, 0)");
         $stmt->bind_param("sss", $username, $password_hash, $email);
         if ($stmt->execute()) {
-            $message = "Registration successful. Please <a href='login.php'>login</a>.";
+            $message = "Registration successful. Please <a href='login.php' class='text-indigo-600 hover:underline'>login</a>.";
         } else {
             $message = "Registration failed.";
         }
@@ -34,19 +33,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Register - QR Code Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body>
-    <h2>Register</h2>
-    <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
-    <form method="post">
-        <label>Username: <input name="username" required></label><br>
-        <label>Email: <input name="email" type="email" required></label><br>
-        <label>Password: <input name="password" type="password" required></label><br>
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="login.php">Login here</a></p>
+<body class="bg-slate-100 text-slate-800 p-4 md:p-8">
+    <div class="container mx-auto max-w-md bg-white p-6 md:p-8 rounded-lg shadow-xl mt-16">
+        <h2 class="text-2xl font-bold text-slate-700 mb-6 text-center">Register</h2>
+        <?php if ($message): ?>
+            <div class="mb-4 p-3 rounded-md bg-red-100 text-red-700 text-center"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <form method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                <input name="username" required class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                <input name="email" type="email" required class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <input name="password" type="password" required class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+                Register
+            </button>
+        </form>
+        <div class="mt-4 text-center text-sm text-slate-600">
+            <a href="login.php" class="text-indigo-600 hover:underline">Already have an account? Login</a>
+        </div>
+    </div>
 </body>
 </html>

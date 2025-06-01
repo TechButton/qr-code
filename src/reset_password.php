@@ -1,5 +1,4 @@
 <?php
-<?php
 require_once 'config.php';
 session_start();
 $message = '';
@@ -17,7 +16,7 @@ if (isset($_GET['token'])) {
             $stmt = $conn->prepare("UPDATE users SET password_hash=?, reset_token=NULL, reset_expires=NULL WHERE id=?");
             $stmt->bind_param("si", $new_hash, $user_id);
             $stmt->execute();
-            $message = "Password reset! <a href='login.php'>Login</a>";
+            $message = "Password reset! <a href='login.php' class='text-indigo-600 hover:underline'>Login</a>";
         } else {
             $message = "Invalid or expired token.";
         }
@@ -28,16 +27,34 @@ if (isset($_GET['token'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
-<head><title>Reset Password</title></head>
-<body>
-<h2>Reset Password</h2>
-<?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
-<?php if (isset($_GET['token']) && !$message): ?>
-<form method="post">
-    <label>New Password: <input type="password" name="new_password" required></label><br>
-    <button type="submit">Reset Password</button>
-</form>
-<?php endif; ?>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password - QR Code Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 p-4 md:p-8">
+    <div class="container mx-auto max-w-md bg-white p-6 md:p-8 rounded-lg shadow-xl mt-16">
+        <h2 class="text-2xl font-bold text-slate-700 mb-6 text-center">Reset Password</h2>
+        <?php if ($message) echo "<div class='mb-4 p-3 rounded-md bg-".(strpos($message, 'reset!') !== false ? 'green' : 'red')."-100 text-".(strpos($message, 'reset!') !== false ? 'green' : 'red')."-700 text-center'>$message</div>"; ?>
+        <?php if (isset($_GET['token']) && !$message): ?>
+        <form method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+                <input type="password" name="new_password" required class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+                Reset Password
+            </button>
+        </form>
+        <?php endif; ?>
+        <div class="mt-4 text-center text-sm text-slate-600">
+            <a href="login.php" class="text-indigo-600 hover:underline">Back to Login</a>
+        </div>
+    </div>
 </body>
 </html>
