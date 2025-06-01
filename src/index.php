@@ -42,27 +42,12 @@ $existing_qr_codes = getQrCodesWithScanCounts($conn, $user_id, $is_admin);
         body { font-family: 'Inter', sans-serif; }
         .dark body { background-color: #0f172a; color: #e2e8f0; }
     </style>
-    <script>
-        // Dark mode toggle logic
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark') ? '1' : '0');
-        }
-        window.onload = function() {
-            if (localStorage.getItem('darkMode') === '1') {
-                document.documentElement.classList.add('dark');
-            }
-        }
-    </script>
 </head>
 <body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 md:p-8 transition-colors duration-300">
     <div class="container mx-auto max-w-4xl bg-white dark:bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl">
         <header class="mb-8 text-center">
             <h1 class="text-3xl md:text-4xl font-bold text-slate-700 dark:text-slate-100">QR Code Generator & Tracker</h1>
             <p class="text-slate-500 dark:text-slate-300">Create and track your QR codes easily.</p>
-            <button onclick="toggleDarkMode()" class="mt-4 px-4 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded transition">
-                Toggle Dark Mode
-            </button>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="mt-2 text-sm text-blue-600 dark:text-blue-400">
                     <a href="change_password.php" class="hover:underline mr-4">Change Password</a>
